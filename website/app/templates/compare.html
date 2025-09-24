@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare APKs</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            max-width: 420px;
+            width: 100%;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #222;
+            text-align: center;
+        }
+        #drop-area {
+            border: 2px dashed #6c63ff;
+            border-radius: 12px;
+            width: 100%;
+            min-height: 180px;
+            margin-bottom: 24px;
+            padding: 32px 0;
+            text-align: center;
+            background: #f8f9fd;
+            transition: border-color 0.2s;
+        }
+        #drop-area.highlight {
+            border-color: #4e47d6;
+            background: #eef0fa;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .button {
+            display: inline-block;
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 12px;
+            margin-right: 8px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .button:last-child {
+            margin-right: 0;
+        }
+        .button:hover {
+            background: #4e47d6;
+        }
+        .nav-link {
+            margin-top: 18px;
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #4e47d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Compare Two APK Files</h1>
+        <form id="compare-form" method="post" enctype="multipart/form-data">
+            <div id="drop-area">
+                <p style="margin-bottom: 16px; color: #555;">Select or Drag & Drop two APKs</p>
+                <input type="file" id="fileElem1" name="apkfile1" accept=".apk" onchange="handleFiles(this.files, 1)">
+                <input type="file" id="fileElem2" name="apkfile2" accept=".apk" onchange="handleFiles(this.files, 2)">
+                <label class="button" for="fileElem1">Select APK 1</label>
+                <label class="button" for="fileElem2">Select APK 2</label>
+            </div>
+            <button type="submit" class="button" style="width:100%;">Compare</button>
+        </form>
+        <a class="nav-link" href="{{ url_for('main.upload_apk') }}">Back to single APK analysis</a>
+    </div>
+    <script>
+        // You can enhance drag-and-drop for two files if needed
+    </script>
+</body>
+</html>

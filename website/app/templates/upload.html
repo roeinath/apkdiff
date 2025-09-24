@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload APK</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            max-width: 400px;
+            width: 100%;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #222;
+            text-align: center;
+        }
+        #drop-area {
+            border: 2px dashed #6c63ff;
+            border-radius: 12px;
+            width: 100%;
+            min-height: 160px;
+            margin-bottom: 24px;
+            padding: 32px 0;
+            text-align: center;
+            background: #f8f9fd;
+            transition: border-color 0.2s;
+        }
+        #drop-area.highlight {
+            border-color: #4e47d6;
+            background: #eef0fa;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .button {
+            display: inline-block;
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .button:hover {
+            background: #4e47d6;
+        }
+        .nav-link {
+            margin-top: 18px;
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #4e47d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload APK & JSON</h1>
+        <form id="upload-form" method="post" enctype="multipart/form-data">
+            <div id="drop-area">
+                <p style="margin-bottom: 16px; color: #555;">Drag & Drop APK and JSON here<br>or</p>
+                <input type="file" id="apkElem" name="apkfile" accept=".apk" style="margin-bottom:8px;">
+                <label class="button" for="apkElem">Select APK</label>
+                <input type="file" id="jsonElem" name="jsonfile" accept=".json" style="margin-bottom:8px;">
+                <label class="button" for="jsonElem">Select JSON</label>
+            </div>
+            <button type="submit" class="button" style="width:100%;">Upload</button>
+        </form>
+        <a class="nav-link" href="{{ url_for('main.compare_apk') }}">Compare two APKs</a>
+        <a class="nav-link" href="{{ url_for('main.list_apks') }}">View Uploaded APKs & JSONs</a>
+    </div>
+    <script>
+        let dropArea = document.getElementById('drop-area');
+        let apkInput = document.getElementById('apkElem');
+        let jsonInput = document.getElementById('jsonElem');
+
+        ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false)
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+
+        ;['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'), false)
+        });
+
+        ;['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false)
+        });
+
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].name.endsWith('.apk')) {
+                    apkInput.files = new DataTransfer().files;
+                    let dtApk = new DataTransfer();
+                    dtApk.items.add(files[i]);
+                    apkInput.files = dtApk.files;
+                } else if (files[i].name.endsWith('.json')) {
+                    jsonInput.files = new DataTransfer().files;
+                    let dtJson = new DataTransfer();
+                    dtJson.items.add(files[i]);
+                    jsonInput.files = dtJson.files;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

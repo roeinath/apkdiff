@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View JSON - {{ filename }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            max-width: 700px;
+            width: 100%;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #222;
+            text-align: center;
+        }
+        pre {
+            background: #f8f9fd;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 1rem;
+            color: #333;
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+        .nav-link {
+            margin-top: 8px;
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #4e47d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View JSON: {{ filename }}</h1>
+        <pre>{% if data is string %}{{ data }}{% else %}{{ data | tojson(indent=2) }}{% endif %}</pre>
+        <a class="nav-link" href="{{ url_for('main.list_apks') }}">Back to APKs & JSONs</a>
+    </div>
+</body>
+</html>
